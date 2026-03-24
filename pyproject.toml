@@ -1,0 +1,46 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "tapegif"
+version = "0.1.0"
+description = "Record animated GIFs of Textual terminal apps"
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.10"
+keywords = ["textual", "tui", "gif", "terminal", "demo", "screenshot", "recording"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Software Development :: Libraries",
+    "Topic :: Terminals",
+]
+dependencies = [
+    "textual>=0.80.0",
+    "playwright>=1.40.0",
+    "Pillow>=10.0.0",
+    "click>=8.0.0",
+    "PyYAML>=6.0",
+]
+
+[project.scripts]
+tapegif = "termgif.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/Gnomecromancer/termgif"
+Repository = "https://github.com/Gnomecromancer/termgif"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["termgif*"]
+
+[tool.pytest.ini_options]
+testpaths = ["termgif/tests"]
