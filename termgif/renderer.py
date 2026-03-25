@@ -9,11 +9,20 @@ an animated GIF by Pillow.
 from __future__ import annotations
 import io
 import os
+import re
 import tempfile
 from pathlib import Path
 
 from PIL import Image
 from playwright.sync_api import sync_playwright
+
+
+def _viewbox_size(svg: str) -> tuple[int, int] | None:
+    """Extract (width, height) from an SVG's viewBox attribute, if present."""
+    m = re.search(r'viewBox=["\'][\d.]+ [\d.]+ ([\d.]+) ([\d.]+)["\']', svg)
+    if m:
+        return int(float(m.group(1))), int(float(m.group(2)))
+    return None
 
 
 _HTML_TEMPLATE = """\
@@ -24,8 +33,10 @@ _HTML_TEMPLATE = """\
 <style>
   html, body {{
     margin: 0; padding: 0;
-    background: transparent;
-    display: inline-block;
+    background: #000;
+  }}
+  svg {{
+    display: block;
   }}
 </style>
 </head>
@@ -34,6 +45,13 @@ _HTML_TEMPLATE = """\
 
 
 def _svg_to_png(svg: str, page) -> bytes:
+    # Set viewport before loading so the browser lays out at the right size.
+    # Rich/Textual SVGs only have viewBox (no width/height attrs), so we parse
+    # the viewBox to determine dimensions up-front rather than after load.
+    vb = _viewbox_size(svg)
+    if vb:
+        page.set_viewport_size({"width": vb[0] + 4, "height": vb[1] + 4})
+
     with tempfile.NamedTemporaryFile(
         suffix=".html", delete=False, mode="w", encoding="utf-8"
     ) as f:
@@ -44,16 +62,6 @@ def _svg_to_png(svg: str, page) -> bytes:
         url = "file:///" + tmp.replace("\\", "/")
         page.goto(url)
         page.wait_for_load_state("networkidle")
-
-        svg_el = page.query_selector("svg")
-        if svg_el:
-            bb = svg_el.bounding_box()
-            if bb:
-                page.set_viewport_size({
-                    "width": max(1, int(bb["width"]) + 4),
-                    "height": max(1, int(bb["height"]) + 4),
-                })
-
         return page.screenshot(full_page=True)
     finally:
         os.unlink(tmp)
