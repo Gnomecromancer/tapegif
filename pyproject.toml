@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "tapegif"
-version = "0.1.0"
+version = "0.1.1"
 description = "Record animated GIFs of Textual terminal apps"
 readme = "README.md"
 license = { text = "MIT" }
@@ -35,8 +35,8 @@ dependencies = [
 tapegif = "termgif.cli:main"
 
 [project.urls]
-Homepage = "https://github.com/Gnomecromancer/termgif"
-Repository = "https://github.com/Gnomecromancer/termgif"
+Homepage = "https://github.com/Gnomecromancer/tapegif"
+Repository = "https://github.com/Gnomecromancer/tapegif"
 
 [tool.setuptools.packages.find]
 where = ["."]
