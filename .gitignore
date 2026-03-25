@@ -8,6 +8,7 @@ dist/
 build/
 .pytest_cache/
 *.gif
+!demo.gif
 *.webp
 *.apng
 .env

@@ -2,6 +2,8 @@
 
 Record animated GIFs of [Textual](https://github.com/Textualize/textual) terminal apps.
 
+![tapegif demo](demo.gif)
+
 ```
 pip install tapegif
 tapegif record myapp.py --tape demo.tape --output demo.gif

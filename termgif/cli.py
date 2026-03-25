@@ -1,9 +1,9 @@
 """
-termgif CLI entry point.
+tapegif CLI entry point.
 
 Usage:
-    termgif record path/to/app.py:MyApp [--tape demo.tape] [--output demo.gif]
-    termgif init                          # scaffold a demo.tape in the current directory
+    tapegif record path/to/app.py [--tape demo.tape] [--output demo.gif]
+    tapegif init                          # scaffold a demo.tape in the current directory
 """
 
 from __future__ import annotations
@@ -73,7 +73,7 @@ def record(app_spec: str, tape: Path | None, output: Path | None, width: int | N
     """
     Record APP to an animated GIF.
 
-    APP must be specified as path/to/file.py:ClassName or module.path:ClassName.
+    APP is path/to/file.py (auto-discovers App subclass) or path/to/file.py:ClassName.
 
     \b
     Examples:
