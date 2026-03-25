@@ -79,13 +79,13 @@ def test_load_no_capture_steps():
     assert all(s.capture is None for s in t.steps)
 
 
-def test_bad_spec_no_colon():
-    from termgif.recorder import _load_app_class
-    with pytest.raises(ValueError, match="App spec must be"):
-        _load_app_class("myapp.py")
-
-
 def test_bad_spec_missing_file():
     from termgif.recorder import _load_app_class
     with pytest.raises(FileNotFoundError):
         _load_app_class("/nonexistent/app.py:MyApp")
+
+
+def test_bad_spec_missing_file_no_colon():
+    from termgif.recorder import _load_app_class
+    with pytest.raises(FileNotFoundError):
+        _load_app_class("/nonexistent/app.py")
